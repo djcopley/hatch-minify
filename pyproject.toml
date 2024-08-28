@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hatch-minify"
+dynamic = ["version"]
+description = "A hatch build hook python minifier"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+keywords = []
+authors = [
+  { name = "Daniel Copley", email = "djcopley@proton.me" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "hatchling",
+  "python-minifier"
+]
+
+[project.urls]
+Documentation = "https://github.com/djcopley/hatch-minify#readme"
+Issues = "https://github.com/djcopley/hatch-minify/issues"
+Source = "https://github.com/djcopley/hatch-minify"
+
+[project.entry-points.hatch]
+minfy = "hatch_minify.hooks"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.envs.hatch-test]
+dependencies = [
+  "pytest",
+]
+
+[tool.hatch.envs.types]
+template = "hatch-test"
+extra-dependencies = [
+  "mypy~=1.0",
+]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/hatch_minify tests}"
+
+[tool.coverage.run]
+source_pkgs = ["hatch_minify"]
+branch = true
+parallel = true
+omit = []
+
+[tool.coverage.paths]
+hatch_minify = ["src/hatch_minify"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]

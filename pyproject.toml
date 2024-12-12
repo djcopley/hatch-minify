@@ -52,7 +52,7 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/hatch_minify tests}"
+check = "mypy {args:src/hatch_minify tests}"
 
 [tool.coverage.run]
 source_pkgs = ["hatch_minify"]
@@ -70,3 +70,6 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*" = ["INP001", "ARG"]

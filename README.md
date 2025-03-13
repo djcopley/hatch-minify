@@ -1,4 +1,10 @@
-# Hatch Minify Build Hook <div><a href="https://github.com/djcopley/hatch-minify/actions/workflows/tests.yml"><img src="https://github.com/djcopley/hatch-minify/actions/workflows/tests.yml/badge.svg?branch=main" alt="Tests" /></a> <a href="https://badge.fury.io/py/hatch-minify"><img src="https://badge.fury.io/py/hatch-minify.svg" alt="PyPI version" /></a> <a href="https://pypi.python.org/pypi/hatch-minify/"><img src="https://img.shields.io/pypi/pyversions/hatch-minify.svg" alt="PyPI Supported Python Versions" /></a> <a href="https://pepy.tech/project/hatch-minify"><img src="https://static.pepy.tech/badge/hatch-minify" alt="Downloads" /></a></div>
+# Hatch Minify Build Hook
+ 
+[![Hatch](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+[![Tests](https://github.com/djcopley/hatch-minify/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/djcopley/hatch-minify/actions/workflows/tests.yml)
+[![PyPI version](https://badge.fury.io/py/hatch-minify.svg)](https://badge.fury.io/py/hatch-minify)
+[![PyPI Supported Python Versions](https://img.shields.io/pypi/pyversions/hatch-minify.svg)](https://pypi.python.org/pypi/hatch-minify/)
+[![Downloads](https://static.pepy.tech/badge/hatch-minify)](https://pepy.tech/project/hatch-minify)
 
 This [Hatch](https://hatch.pypa.io/latest/) plugin provides a build hook for 
 [minifying](https://en.wikipedia.org/wiki/Minification_(programming)) python source code. 

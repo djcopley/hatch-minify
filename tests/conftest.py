@@ -1,76 +1,92 @@
-from __future__ import annotations
-
-from typing import Any, Callable
+import textwrap
 from unittest.mock import MagicMock
 
 import pytest
+from hatchling.builders.plugin.interface import IncludedFile
 
 from hatch_minify.plugin import MinifyBuildHook
 
 
 @pytest.fixture
-def mock_builder():
-    builder = MagicMock()
-    mock_files = [MagicMock(path="test.js"), MagicMock(path="test.css"), MagicMock(path="test.html")]
-    builder.recurse_included_files.return_value = mock_files
-    builder.target_dir = "/mock/target/dir"
-    builder.source_dir = "/mock/source/dir"
-    return builder
-
-
-@pytest.fixture
 def mock_app():
     app = MagicMock()
-    app.env_vars = {}
-    app.verbosity = 0
+    app.display_waiting = MagicMock()
+    app.display_debug = MagicMock()
     return app
 
 
 @pytest.fixture
-def mock_hook(mock_builder, mock_app):
-    return MinifyBuildHook(mock_builder, mock_app)
+def mock_builder():
+    return MagicMock()
 
 
 @pytest.fixture
 def mock_build_config(mock_builder):
-    config = MagicMock()
-    config.builder = mock_builder
-    return config
+    build_config = MagicMock()
+    build_config.builder = mock_builder
+    return build_config
 
 
 @pytest.fixture
-def build_hook(mock_build_config, mock_app):
-    root = "/mock/root"
-    config = {"key": "value"}
-    metadata = MagicMock()
-    directory = "/mock/directory"
-    target_name = "mock_target"
-    return MinifyBuildHook(root, config, mock_build_config, metadata, directory, target_name, app=mock_app)
+def mock_config():
+    return {}
 
 
 @pytest.fixture
-def build_hook_factory(tmp_path_factory) -> Callable:
-    def _create_build_hook(
-        root: str = "/mock/root",
-        config: dict[str, Any] | None = None,
-        build_config: Any = None,
-        metadata: Any = None,
-        directory: str = "/mock/directory",
-        target_name: str = "mock_target",
-        app: Any = None,
-    ) -> MinifyBuildHook:
-        if config is None:
-            config = {"key": "value"}
-        if build_config is None:
-            build_config = MagicMock()
-        if metadata is None:
-            metadata = MagicMock()
-        if app is None:
-            app = MagicMock()
+def mock_metadata():
+    return MagicMock()
 
-        # Create a new temporary directory for each invocation
-        tmp_path_factory.mktemp("build_hook")
 
-        return MinifyBuildHook(root, config, build_config, metadata, directory, target_name, app=app)
+@pytest.fixture
+def build_data():
+    return {"force_include": {}}
 
-    return _create_build_hook
+
+@pytest.fixture
+def sample_py_file(tmp_path):
+    file_path = tmp_path / "sample.py"
+    contents = textwrap.dedent("""\
+    def hello():
+        print("Hello, World!")
+    """)
+    file_path.write_text(contents, encoding="utf-8")
+    return IncludedFile(
+        str(file_path),
+        "package/sample.py",
+        "package/sample.py",
+    )
+
+
+@pytest.fixture
+def sample_txt_file(tmp_path):
+    file_path = tmp_path / "sample.txt"
+    contents = textwrap.dedent("""\
+    This is a sample text file.
+    """)
+    file_path.write_text(contents, encoding="utf-8")
+    return IncludedFile(
+        str(file_path),
+        "package/sample.txt",
+        "package/sample.txt",
+    )
+
+
+@pytest.fixture
+def minify_build_hook(
+    tmp_path,
+    mock_config,
+    mock_build_config,
+    mock_metadata,
+    mock_app,
+):
+    root = str(tmp_path)
+    dist_path = str(tmp_path / "dist")
+    return MinifyBuildHook(
+        root,
+        mock_config,
+        mock_build_config,
+        mock_metadata,
+        dist_path,
+        "wheel",
+        mock_app,
+    )

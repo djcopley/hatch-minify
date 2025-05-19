@@ -34,7 +34,12 @@ class MinifyBuildHook(BuildHookInterface):
             return
         self.minify_included_files(build_data)
 
-    def finalize(self, version: str, build_data: dict[str, Any], artifact_path: str) -> None:  # noqa: ARG002
+    def finalize(
+        self,
+        version: str,
+        build_data: dict[str, Any],  # noqa: ARG002
+        artifact_path: str,  # noqa: ARG002
+    ) -> None:
         if version != "standard":
             return
         self.minified_directory.cleanup()
